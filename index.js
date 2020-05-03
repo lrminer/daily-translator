@@ -7,6 +7,9 @@ const bible = require("./english-bible.json");
 // console.log(bible);
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+if (process.env.NODE_ENV === "production") {
+  app.use(express.static("app/build"));
+}
 const PORT = process.env.PORT || 3001;
 const changeDailyVerse = (bible) => {
   const bookIndex = Math.floor(Math.random() * bible.length);
@@ -56,7 +59,7 @@ app.get("/api", (req, res) => {
 console.log(path.join(__dirname, "./app/build/index.html"));
 
 app.get("*", (req, res) => {
-  res.sendFile(path.join(__dirname, "./app/build/index.html"));
+  res.sendFile(path.join(__dirname, "./build/index.html"));
 });
 
 app.listen(PORT, () => console.log(`App listening on port ${PORT}`));
