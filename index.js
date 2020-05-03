@@ -56,7 +56,7 @@ app.get("/api", (req, res) => {
 console.log(path.join(__dirname, "./app/build/index.html"));
 
 app.get("*", (req, res) => {
-  res.sendFile(path.join(__dirname, "./build/index.html"));
+  res.sendFile(path.join(__dirname, "./app/build/index.html"));
 });
 
 app.listen(PORT, () => console.log(`App listening on port ${PORT}`));
