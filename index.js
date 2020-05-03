@@ -1,6 +1,7 @@
 const express = require("express");
 const app = express();
 const axios = require("axios");
+const path = require("path");
 require("dotenv").config();
 const bible = require("./english-bible.json");
 // console.log(bible);
@@ -51,6 +52,8 @@ app.get("/api", (req, res) => {
   res.json(data);
   //   });
 });
+
+console.log(path.join(__dirname, "./app/build/index.html"));
 
 app.get("*", (req, res) => {
   res.sendFile(path.join(__dirname, "./app/build/index.html"));
