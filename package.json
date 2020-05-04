@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "node index",
+    "start": "if-env NODE_ENV=production && npm run start:prod || node index.js",
+    "start:prod": "node index.js",
     "client": "cd app && npm run start",
     "install": "cd app && npm install",
     "build": "cd app && npm run build",
@@ -16,7 +17,7 @@
     "axios": "^0.19.2",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
-    "mongoose": "^5.9.11",
-    "nodemon": "^2.0.3"
+    "if-env": "^1.0.4",
+    "mongoose": "^5.9.11"
   }
 }
