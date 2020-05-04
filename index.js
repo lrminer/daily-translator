@@ -4,6 +4,12 @@ const axios = require("axios");
 const path = require("path");
 require("dotenv").config();
 const bible = require("./english-bible.json");
+const spanishBible = require("./spanish-bible.json");
+const combinedBible = bible.map((x, i) => {
+  return [x, spanishBible[i]];
+});
+console.log(combinedBible.length);
+
 // console.log(bible);
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -31,24 +37,38 @@ const changeDailyVerse = (bible) => {
 
 const changeDailyChapter = (bible) => {
   const bookIndex = Math.floor(Math.random() * bible.length);
-  const book = bible[bookIndex];
+  //   console.log("bookIndex", bookIndex);
+
+  const book = bible[bookIndex][0].name;
+  console.log("book", book);
+  //   const bookName = book.name;
+
+  //   console.log(bookIndex);
   const chapterIndex = Math.floor(
-    Math.random() * bible[bookIndex].chapters.length
+    Math.random() * bible[bookIndex][0].chapters.length
   );
-  const chapter = bible[bookIndex].chapters[chapterIndex];
+  //   console.log("chapterIndex", chapterIndex);
+  //   console.log("bible[bookIndex][0]", bible[bookIndex][0]);
+  const chapter = combinedBible[bookIndex][0].chapters[chapterIndex];
+  const spChapter = combinedBible[bookIndex][1].chapters[chapterIndex];
+  //   console.log("chapter", chapter);
+  //   const spChapter = combinedBible[bookIndex][1].chapters[chapterIndex];
   //   const line = chapter[Math.floor(Math.random() * chapter.length)];
   //   const verse = chapter.join("\n");
   //   console.log("book", book);
   //   console.log("chapter", chapter);
   //   console.log("verse", verse);
   return {
-    book: book.name,
+    book,
+    chapterNo: chapterIndex + 1,
     chapter,
+    spChapter,
   };
 };
+// console.log(changeDailyChapter(combinedBible));
 
 // const data = changeDailyVerse(bible);
-const data = changeDailyChapter(bible);
+const data = changeDailyChapter(combinedBible);
 
 app.get("/api", (req, res) => {
   //   axios.get("dictionaryURL", req.body).then((data) => {

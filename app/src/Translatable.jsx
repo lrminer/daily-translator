@@ -3,12 +3,10 @@ import React, { useEffect, useState } from "react";
 const Translatable = (props) => {
   const [isSpanish, setIsSpanish] = useState(false);
 
-  useEffect(() => {
-     console.log('hello God') 
-  }, []);
+  useEffect(() => {}, []);
 
   return (
-    <div style={{ marginTop: 10 }} onClick={()=>setIsSpanish(!isSpanish)}>
+    <div style={{ marginTop: 10 }} onClick={() => setIsSpanish(!isSpanish)}>
       {(isSpanish && props.spanish) || props.english}
     </div>
   );
