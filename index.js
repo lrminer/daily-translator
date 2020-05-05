@@ -3,20 +3,24 @@ const app = express();
 const axios = require("axios");
 const path = require("path");
 require("dotenv").config();
+
+const PORT = process.env.PORT || 3001;
+
 const bible = require("./english-bible.json");
 const spanishBible = require("./spanish-bible.json");
 const combinedBible = bible.map((x, i) => {
   return [x, spanishBible[i]];
 });
-console.log(combinedBible.length);
 
-// console.log(bible);
+
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 if (process.env.NODE_ENV === "production") {
   app.use(express.static("app/build"));
 }
-const PORT = process.env.PORT || 3001;
+
+
 const changeDailyVerse = (bible) => {
   const bookIndex = Math.floor(Math.random() * bible.length);
   const book = bible[bookIndex];
@@ -26,9 +30,9 @@ const changeDailyVerse = (bible) => {
   const chapter = bible[bookIndex].chapters[chapterIndex];
   const line = chapter[Math.floor(Math.random() * chapter.length)];
 
-  console.log("book", book);
-  console.log("chapter", chapter);
-  console.log("line", line);
+  // console.log("book", book);
+  // console.log("chapter", chapter);
+  // console.log("line", line);
   return {
     book: book.name,
     line,
@@ -65,15 +69,12 @@ const changeDailyChapter = (bible) => {
     spChapter,
   };
 };
-// console.log(changeDailyChapter(combinedBible));
 
-// const data = changeDailyVerse(bible);
 const data = changeDailyChapter(combinedBible);
 
+require('./routes/api-routes')(app);
 app.get("/api", (req, res) => {
-  //   axios.get("dictionaryURL", req.body).then((data) => {
   res.json(data);
-  //   });
 });
 
 console.log(path.join(__dirname, "./app/build/index.html"));
